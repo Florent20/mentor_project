@@ -1,1 +1,7 @@
-[]
+{
+  "id": 1,
+  "name": "John Smith",
+  "email": "john@example.com",
+  "goals": "Learn backend development and get my first job.",
+  "createdAt": "2026-08-12T10:00:00Z"
+}
