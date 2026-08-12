@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const mentorRoutes = require('./routes/mentorRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+app.use('/api/admin', adminRoutes);
+
+app.use('/api/sessions', sessionRoutes);
 
 app.use('/api/requests', requestRoutes);
 
