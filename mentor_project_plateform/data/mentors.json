@@ -1,1 +1,8 @@
-[]
+{
+  "id": 1,
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "bio": "Senior backend developer with 5 years experience.",
+  "skills": ["Node.js", "Career coaching", "System design"],
+  "createdAt": "2026-08-12T10:00:00Z"
+}
