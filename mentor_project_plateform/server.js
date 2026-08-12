@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const mentorRoutes = require('./routes/mentorRoutes');
+const requestRoutes = require('./routes/requestRoutes');
+
+app.use('/api/requests', requestRoutes);
 
 app.use(express.json());
 
