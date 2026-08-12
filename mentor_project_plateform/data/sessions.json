@@ -1,1 +1,11 @@
-[]
+{
+  "id": 1,
+  "requestId": 1,
+  "mentorId": 1,
+  "menteeId": 1,
+  "scheduledDate": "2026-08-20T14:00:00Z",
+  "topic": "Intro to REST APIs",
+  "status": "upcoming",
+  "feedback": null,
+  "createdAt": "2026-08-12T10:00:00Z"
+}
