@@ -8,16 +8,16 @@ function login(req, res) {
   }
 
   const mentors = readData('mentors.json');
-  const mentors_match = mentors.find(m => m.email === email && m.password === password);
-  if (mentors_match) {
-    const { password: _, ...safeMentor } = mentors_match;
+  const mentorMatch = mentors.find(m => m.email === email && m.password === password);
+  if (mentorMatch) {
+    const { password: _, ...safeMentor } = mentorMatch;
     return res.status(200).json({ ...safeMentor, role: 'mentor' });
   }
 
   const mentees = readData('mentees.json');
-  const mentee_match = mentees.find(m => m.email === email && m.password === password);
-  if (mentee_match) {
-    const { password: _, ...safeMentee } = mentee_match;
+  const menteeMatch = mentees.find(m => m.email === email && m.password === password);
+  if (menteeMatch) {
+    const { password: _, ...safeMentee } = menteeMatch;
     return res.status(200).json({ ...safeMentee, role: 'mentee' });
   }
 

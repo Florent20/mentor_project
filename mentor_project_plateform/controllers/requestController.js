@@ -5,6 +5,11 @@ const FILE_NAME = 'requests.json';
 const MENTORS_FILE = 'mentors.json';
 const MENTEES_FILE = 'mentees.json';
 
+function stripPassword(user) {
+  const { password, ...safe } = user;
+  return safe;
+}
+
 function sendRequest(req, res) {
   const { mentorId, menteeId, message } = req.body;
 
@@ -77,6 +82,52 @@ function getRequestsByMentee(req, res) {
   res.status(200).json(menteeRequests);
 }
 
+// NEW: pending requests for a mentor, enriched with the mentee's name/goals
+// so the frontend doesn't need one fetch per request just to show who it's from.
+function getPendingRequestsForMentor(req, res) {
+  if (!isValidId(req.params.mentorId)) {
+    return res.status(400).json({ error: 'Invalid mentor ID' });
+  }
+
+  const mentorId = parseInt(req.params.mentorId);
+  const requests = readData(FILE_NAME).filter(
+    r => r.mentorId === mentorId && r.status === 'pending'
+  );
+  const mentees = readData(MENTEES_FILE);
+
+  const enriched = requests.map(r => {
+    const mentee = mentees.find(m => m.id === r.menteeId);
+    return {
+      ...r,
+      mentee: mentee ? stripPassword(mentee) : null
+    };
+  });
+
+  res.status(200).json(enriched);
+}
+
+// NEW: a mentor's active mentees (accepted requests), enriched with mentee data
+function getMenteesForMentor(req, res) {
+  if (!isValidId(req.params.mentorId)) {
+    return res.status(400).json({ error: 'Invalid mentor ID' });
+  }
+
+  const mentorId = parseInt(req.params.mentorId);
+  const acceptedRequests = readData(FILE_NAME).filter(
+    r => r.mentorId === mentorId && r.status === 'accepted'
+  );
+  const mentees = readData(MENTEES_FILE);
+
+  const enriched = acceptedRequests
+    .map(r => {
+      const mentee = mentees.find(m => m.id === r.menteeId);
+      return mentee ? { ...stripPassword(mentee), requestId: r.id } : null;
+    })
+    .filter(Boolean);
+
+  res.status(200).json(enriched);
+}
+
 function respondToRequest(req, res) {
   if (!isValidId(req.params.id)) {
     return res.status(400).json({ error: 'Invalid request ID' });
@@ -118,6 +169,8 @@ module.exports = {
   getAllRequests,
   getRequestsByMentor,
   getRequestsByMentee,
+  getPendingRequestsForMentor,
+  getMenteesForMentor,
   respondToRequest,
   getActiveRelationships
 };

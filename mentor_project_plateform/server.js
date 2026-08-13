@@ -6,6 +6,8 @@ const menteeRoutes = require('./routes/menteeRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const authRoutes = require('./routes/authRoutes');
+// ...
 
 app.use(express.json());
 
@@ -21,6 +23,7 @@ app.get('/', (req, res) => {
   res.send('Mentor-Mentee Platform API is running');
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/mentors', mentorRoutes);
 app.use('/api/mentees', menteeRoutes);
 app.use('/api/requests', requestRoutes);
