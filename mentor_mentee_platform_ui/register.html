@@ -19,20 +19,78 @@
     <section class="auth-card">
       <a class="back-link" href="index.html">← Back to home</a>
       <h2>Create your account</h2><p class="muted">Tell us how you want to use MentorConnect.</p>
-      <form>
+
+      <p id="registerError" class="form-error" style="display:none; color:#d33; margin-bottom:12px;"></p>
+
+      <form id="registerForm">
         <div class="role-select">
           <label class="role-option"><input type="radio" name="role" value="mentee" checked><span>🎓<b>Mentee</b><small>I want to learn and grow</small></span></label>
           <label class="role-option"><input type="radio" name="role" value="mentor"><span>🧑🏽‍🏫<b>Mentor</b><small>I want to share my expertise</small></span></label>
         </div>
-        <div class="two-col"><label>First name<input type="text" placeholder="Bwam" required></label><label>Last name<input type="text" placeholder="Florent" required></label></div>
-        <label>Email address<input type="email" placeholder="you@example.com" required></label>
-        <label>Password<input type="password" placeholder="Create a password" required></label>
+        <div class="two-col">
+          <label>First name<input type="text" id="firstName" placeholder="Bwam" required></label>
+          <label>Last name<input type="text" id="lastName" placeholder="Florent" required></label>
+        </div>
+        <label>Email address<input type="email" id="email" placeholder="you@example.com" required></label>
+        <label>Password<input type="password" id="password" placeholder="Create a password" required></label>
         <label class="check"><input type="checkbox" required> I agree to the terms and privacy policy.</label>
-        <button class="btn btn-primary full" type="submit">Create account</button>
+        <button class="btn btn-primary full" type="submit" id="registerBtn">Create account</button>
       </form>
       <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
     </section>
   </main>
   <script src="js/main.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const registerForm = document.getElementById('registerForm');
+    const registerError = document.getElementById('registerError');
+    const registerBtn = document.getElementById('registerBtn');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      registerError.style.display = 'none';
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+
+      const name = `${firstName} ${lastName}`.trim();
+
+      const payload = { name, email, password };
+      if (role === 'mentee') {
+        payload.goals = '';
+      } else {
+        payload.bio = '';
+        payload.skills = [];
+      }
+
+      const endpoint = role === 'mentor' ? '/mentors' : '/mentees';
+
+      registerBtn.disabled = true;
+      registerBtn.textContent = 'Creating account...';
+
+      try {
+        const res = await apiPost(endpoint, payload);
+
+        if (!res.ok) {
+          registerError.textContent = res.data.error || 'Registration failed. Please try again.';
+          registerError.style.display = 'block';
+          registerBtn.disabled = false;
+          registerBtn.textContent = 'Create account';
+          return;
+        }
+
+        saveCurrentUser({ ...res.data, role });
+        window.location.href = role === 'mentor' ? 'mentor-dashboard.html' : 'dashboard.html';
+      } catch (err) {
+        registerError.textContent = 'Could not reach the server. Is it running?';
+        registerError.style.display = 'block';
+        registerBtn.disabled = false;
+        registerBtn.textContent = 'Create account';
+      }
+    });
+  </script>
 </body>
 </html>
