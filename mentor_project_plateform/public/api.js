@@ -1,53 +1,188 @@
-// Shared API helper functions for MentorConnect frontend
+// ==========================================
+// MENTORCONNECT API
+// ==========================================
 
 const API_BASE = 'http://localhost:3000/api';
 
+
+// ==========================================
+// GET
+// ==========================================
+
 async function apiGet(path) {
-  const res = await fetch(`${API_BASE}${path}`);
-  const data = await res.json();
-  return { ok: res.ok, status: res.status, data };
+
+    try {
+
+        const response =
+            await fetch(`${API_BASE}${path}`);
+
+
+        const data =
+            await response.json();
+
+
+        return {
+            ok: response.ok,
+            status: response.status,
+            data
+        };
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            status: 0,
+            data: {
+                error:
+                    'Could not reach the server. Is it running?'
+            }
+        };
+    }
 }
+
+
+// ==========================================
+// POST
+// ==========================================
 
 async function apiPost(path, body) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const data = await res.json();
-  return { ok: res.ok, status: res.status, data };
+
+    try {
+
+        const response =
+            await fetch(`${API_BASE}${path}`, {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body:
+                    JSON.stringify(body)
+            });
+
+
+        const data =
+            await response.json();
+
+
+        return {
+            ok: response.ok,
+            status: response.status,
+            data
+        };
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            status: 0,
+            data: {
+                error:
+                    'Could not reach the server. Is it running?'
+            }
+        };
+    }
 }
+
+
+// ==========================================
+// PUT
+// ==========================================
 
 async function apiPut(path, body) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const data = await res.json();
-  return { ok: res.ok, status: res.status, data };
+
+    try {
+
+        const response =
+            await fetch(`${API_BASE}${path}`, {
+
+                method: 'PUT',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body:
+                    JSON.stringify(body)
+            });
+
+
+        const data =
+            await response.json();
+
+
+        return {
+            ok: response.ok,
+            status: response.status,
+            data
+        };
+
+    } catch (error) {
+
+        return {
+            ok: false,
+            status: 0,
+            data: {
+                error:
+                    'Could not reach the server. Is it running?'
+            }
+        };
+    }
 }
 
-// --- Simple "logged in user" storage (NOT real auth/security) ---
+
+// ==========================================
+// CURRENT USER
+// ==========================================
 
 function saveCurrentUser(user) {
-  localStorage.setItem('currentUser', JSON.stringify(user));
+
+    localStorage.setItem(
+        'currentUser',
+        JSON.stringify(user)
+    );
 }
+
 
 function getCurrentUser() {
-  const raw = localStorage.getItem('currentUser');
-  return raw ? JSON.parse(raw) : null;
+
+    const raw =
+        localStorage.getItem(
+            'currentUser'
+        );
+
+    return raw
+        ? JSON.parse(raw)
+        : null;
 }
+
 
 function clearCurrentUser() {
-  localStorage.removeItem('currentUser');
+
+    localStorage.removeItem(
+        'currentUser'
+    );
 }
 
+
 function requireLogin() {
-  const user = getCurrentUser();
-  if (!user) {
-    window.location.href = 'login.html';
-    return null;
-  }
-  return user;
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            'login.html';
+
+        return null;
+    }
+
+
+    return user;
 }

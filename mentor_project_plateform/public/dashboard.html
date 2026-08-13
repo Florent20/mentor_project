@@ -64,108 +64,760 @@
         <div class="progress-track"><span id="progressBarFill" style="width:0%"></span></div>
         <div class="progress-items"><span>○ Goals defined</span><span>○ First session</span><span>○ API fundamentals</span><span>○ Build final project</span></div>
       </section>
+
+      <section class="panel workflow-panel" id="findMentorPanel">
+
+    <div class="panel-heading">
+
+        <div>
+            <h2>Request mentorship</h2>
+
+            <p>
+                Choose a mentor and send a mentorship request.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="workflow-form-row">
+
+        <label>
+            Mentor
+
+            <select id="mentorSelect">
+
+                <option value="">
+                    Select a mentor
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Message
+
+            <input
+                id="requestMessageInput"
+                type="text"
+                placeholder="Introduce yourself..."
+            >
+
+        </label>
+
+
+        <button
+            class="btn btn-primary"
+            id="sendRequestBtn"
+            type="button"
+        >
+            Send request
+        </button>
+
+    </div>
+
+
+    <p
+        id="requestMessage"
+        class="workflow-message"
+    ></p>
+
+</section>
+
+<section class="panel workflow-panel">
+
+    <div class="panel-heading">
+
+        <div>
+
+            <h2>My mentorship sessions</h2>
+
+            <p>
+                View your scheduled sessions and submit feedback.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="menteeSessionsList">
+
+        <p class="muted-panel">
+            Loading sessions...
+        </p>
+
+    </div>
+
+</section>
     </div>
   </main>
   <script src="main.js"></script>
   <script src="api.js"></script>
-  <script>
-    (async function initDashboard() {
-      const user = requireLogin();
-      if (!user) return; // requireLogin already redirects to login.html
+ <script>
 
-      // --- Header / greeting ---
-      const nameParts = (user.name || '').trim().split(' ');
-      const firstName = nameParts[0] || 'there';
-      const initials = ((nameParts[0]?.[0] || '') + (nameParts[nameParts.length - 1]?.[0] || '')).toUpperCase();
+(async function initDashboard() {
 
-      document.getElementById('welcomeHeading').textContent = `Good morning, ${firstName} 👋`;
-      document.getElementById('avatarInitials').textContent = initials || '--';
+    const user = requireLogin();
 
-      document.getElementById('logoutLink').addEventListener('click', () => {
-        clearCurrentUser();
-      });
+    if (!user) return;
 
-      // Mentors now have their own dashboard — send them there
-      if (user.role !== 'mentee') {
-        window.location.href = 'mentor-dashboard.html';
+
+    // Only mentees should use this dashboard.
+
+    if (user.role !== 'mentee') {
+
+        window.location.href =
+            'mentor-dashboard.html';
+
         return;
-      }
+    }
 
-      try {
-        // --- Requests (pending + active) ---
-        const requestsRes = await apiGet(`/requests/mentee/${user.id}`);
-        const requests = requestsRes.ok ? requestsRes.data : [];
-        const pending = requests.filter(r => r.status === 'pending');
-        const accepted = requests.filter(r => r.status === 'accepted');
 
-        document.getElementById('statPending').textContent = pending.length;
-        document.getElementById('navRequestsBadge').textContent = pending.length;
-        document.getElementById('statActive').textContent = accepted.length;
+    // ==========================================
+    // USER INFORMATION
+    // ==========================================
 
-        // --- Sessions (upcoming) ---
-        const sessionsRes = await apiGet(`/sessions/upcoming?menteeId=${user.id}`);
-        const upcomingSessions = sessionsRes.ok ? sessionsRes.data : [];
+    const nameParts =
+        (user.name || '')
+            .trim()
+            .split(' ');
 
-        document.getElementById('statUpcoming').textContent = upcomingSessions.length;
-        document.getElementById('navSessionsBadge').textContent = upcomingSessions.length;
 
-        if (upcomingSessions.length > 0) {
-          // sort by date, take the soonest
-          upcomingSessions.sort((a, b) => new Date(a.scheduledDate) - new Date(b.scheduledDate));
-          const next = upcomingSessions[0];
-          const d = new Date(next.scheduledDate);
+    const firstName =
+        nameParts[0] || 'there';
 
-          document.getElementById('statUpcomingSub').textContent =
-            `Next: ${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
 
-          document.getElementById('sessionDay').textContent = d.getDate();
-          document.getElementById('sessionMonthYear').innerHTML =
-            `${d.toLocaleDateString(undefined, { month: 'short' })}<br>${d.getFullYear()}`;
-          document.getElementById('sessionTopic').textContent = next.topic;
-          document.getElementById('sessionTime').textContent =
-            `◷ ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
+    const initials =
+        (
+            (nameParts[0]?.[0] || '') +
+            (nameParts[nameParts.length - 1]?.[0] || '')
+        ).toUpperCase();
 
-          // Look up mentor name for "with X"
-          const mentorRes = await apiGet(`/mentors/${next.mentorId}`);
-          document.getElementById('sessionWith').textContent =
-            mentorRes.ok ? `with ${mentorRes.data.name}` : '';
-        } else {
-          document.getElementById('nextSessionDetails').style.display = 'none';
-          document.getElementById('noSessionMsg').style.display = 'block';
+
+    document.getElementById(
+        'welcomeHeading'
+    ).textContent =
+        `Good morning, ${firstName} 👋`;
+
+
+    document.getElementById(
+        'avatarInitials'
+    ).textContent =
+        initials || '--';
+
+
+    document.getElementById(
+        'logoutLink'
+    ).addEventListener(
+        'click',
+        clearCurrentUser
+    );
+
+
+    let mentors = [];
+
+    let requests = [];
+
+
+    // ==========================================
+    // LOAD MENTORSHIP REQUESTS
+    // ==========================================
+
+    async function loadRequests() {
+
+        const response =
+            await apiGet(
+                `/requests/mentee/${user.id}`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                response.data.error ||
+                'Could not load requests'
+            );
         }
 
-        // --- Progress ---
-        const progress = typeof user.progress === 'number' ? user.progress : 0;
-        document.getElementById('statProgress').textContent = `${progress}%`;
-        document.getElementById('progressPercentLabel').textContent = `${progress}%`;
-        document.getElementById('progressBarFill').style.width = `${progress}%`;
 
-        // --- Recommended mentors (all mentors, first 3) ---
-        const mentorsRes = await apiGet('/mentors');
-        const mentorList = document.getElementById('mentorList');
+        requests =
+            response.data;
 
-        if (mentorsRes.ok && mentorsRes.data.length > 0) {
-          mentorList.innerHTML = mentorsRes.data.slice(0, 3).map(m => {
-            const mInitials = (m.name || '').split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
-            const skillChips = (m.skills || []).slice(0, 3).map(s => `<span>${s}</span>`).join('');
-            return `
-              <article class="mentor-row">
-                <div class="mentor-avatar blue">${mInitials}</div>
-                <div class="mentor-info">
-                  <h3>${m.name}</h3>
-                  <p>${m.bio || 'Mentor'}</p>
-                  <div class="chips">${skillChips}</div>
-                </div>
-                <button class="btn btn-view btn-small" data-mentor-id="${m.id}">View profile</button>
-              </article>`;
-          }).join('');
-        } else {
-          mentorList.innerHTML = '<p class="muted-panel">No mentors available yet.</p>';
+
+        const pending =
+            requests.filter(
+                r => r.status === 'pending'
+            );
+
+
+        const accepted =
+            requests.filter(
+                r => r.status === 'accepted'
+            );
+
+
+        document.getElementById(
+            'statPending'
+        ).textContent =
+            pending.length;
+
+
+        document.getElementById(
+            'navRequestsBadge'
+        ).textContent =
+            pending.length;
+
+
+        document.getElementById(
+            'statActive'
+        ).textContent =
+            accepted.length;
+    }
+
+
+    // ==========================================
+    // LOAD MENTORS
+    // ==========================================
+
+    async function loadMentors() {
+
+        const response =
+            await apiGet('/mentors');
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                response.data.error ||
+                'Could not load mentors'
+            );
         }
-      } catch (err) {
-        console.error('Dashboard load error:', err);
-      }
-    })();
-  </script>
+
+
+        mentors =
+            response.data;
+
+
+        const mentorList =
+            document.getElementById(
+                'mentorList'
+            );
+
+
+        const select =
+            document.getElementById(
+                'mentorSelect'
+            );
+
+
+        select.innerHTML =
+            '<option value="">Select a mentor</option>' +
+
+            mentors.map(
+                mentor =>
+                    `<option value="${mentor.id}">
+                        ${mentor.name}
+                    </option>`
+            ).join('');
+
+
+        if (!mentors.length) {
+
+            mentorList.innerHTML =
+                '<p class="muted-panel">No mentors available yet.</p>';
+
+            return;
+        }
+
+
+        mentorList.innerHTML =
+            mentors.slice(0, 5).map(
+                mentor => {
+
+                    const initials =
+                        (mentor.name || '')
+                            .split(' ')
+                            .map(x => x[0])
+                            .join('')
+                            .toUpperCase()
+                            .slice(0, 2);
+
+
+                    const existing =
+                        requests.find(
+                            r =>
+                                r.mentorId ===
+                                mentor.id
+                        );
+
+
+                    let button = `
+
+                        <button
+                            class="btn btn-view btn-small request-mentor-btn"
+                            data-mentor-id="${mentor.id}"
+                        >
+                            Request mentorship
+                        </button>
+
+                    `;
+
+
+                    if (
+                        existing?.status ===
+                        'pending'
+                    ) {
+
+                        button = `
+
+                            <button
+                                class="btn btn-view btn-small"
+                                disabled
+                            >
+                                Requested
+                            </button>
+
+                        `;
+                    }
+
+
+                    if (
+                        existing?.status ===
+                        'accepted'
+                    ) {
+
+                        button = `
+
+                            <button
+                                class="btn btn-view btn-small"
+                                disabled
+                            >
+                                Connected
+                            </button>
+
+                        `;
+                    }
+
+
+                    return `
+
+                        <article class="mentor-row">
+
+                            <div class="mentor-avatar blue">
+                                ${initials}
+                            </div>
+
+                            <div class="mentor-info">
+
+                                <h3>
+                                    ${mentor.name}
+                                </h3>
+
+                                <p>
+                                    ${mentor.bio || 'Mentor'}
+                                </p>
+
+                                <div class="chips">
+
+                                    ${(mentor.skills || [])
+                                        .slice(0, 3)
+                                        .map(
+                                            skill =>
+                                                `<span>${skill}</span>`
+                                        )
+                                        .join('')}
+
+                                </div>
+
+                            </div>
+
+                            ${button}
+
+                        </article>
+
+                    `;
+                }
+            ).join('');
+
+
+        document
+            .querySelectorAll(
+                '.request-mentor-btn'
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    'click',
+                    () => {
+
+                        document.getElementById(
+                            'mentorSelect'
+                        ).value =
+                            button.dataset.mentorId;
+
+
+                        document.getElementById(
+                            'findMentorPanel'
+                        ).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+
+                    }
+                );
+
+            });
+    }
+
+
+    // ==========================================
+    // SEND REQUEST
+    // ==========================================
+
+    async function sendRequest() {
+
+        const mentorId =
+            Number(
+                document.getElementById(
+                    'mentorSelect'
+                ).value
+            );
+
+
+        const message =
+            document.getElementById(
+                'requestMessageInput'
+            ).value.trim();
+
+
+        const output =
+            document.getElementById(
+                'requestMessage'
+            );
+
+
+        const button =
+            document.getElementById(
+                'sendRequestBtn'
+            );
+
+
+        if (!mentorId) {
+
+            output.textContent =
+                'Please select a mentor.';
+
+            return;
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+            'Sending...';
+
+
+        try {
+
+            const response =
+                await apiPost(
+                    '/requests',
+                    {
+                        mentorId,
+                        menteeId:
+                            Number(user.id),
+                        message
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                output.textContent =
+                    response.data.error ||
+                    'Request failed.';
+
+                return;
+            }
+
+
+            output.textContent =
+                'Mentorship request sent successfully.';
+
+
+            document.getElementById(
+                'requestMessageInput'
+            ).value = '';
+
+
+            await loadRequests();
+
+            await loadMentors();
+
+
+        } catch (error) {
+
+            output.textContent =
+                error.message;
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                'Send request';
+        }
+    }
+
+
+    // ==========================================
+    // LOAD SESSIONS
+    // ==========================================
+
+    async function loadSessions() {
+
+        const response =
+            await apiGet(
+                `/sessions?menteeId=${user.id}`
+            );
+
+
+        const list =
+            document.getElementById(
+                'menteeSessionsList'
+            );
+
+
+        if (!response.ok) {
+
+            list.innerHTML =
+                `<p class="muted-panel">
+                    Could not load sessions.
+                </p>`;
+
+            return;
+        }
+
+
+        const sessions =
+            response.data.filter(
+                session =>
+                    session.menteeId ===
+                    Number(user.id)
+            );
+
+
+        const upcoming =
+            sessions.filter(
+                session =>
+                    session.status ===
+                    'upcoming'
+            );
+
+
+        document.getElementById(
+            'statUpcoming'
+        ).textContent =
+            upcoming.length;
+
+
+        document.getElementById(
+            'navSessionsBadge'
+        ).textContent =
+            upcoming.length;
+
+
+        if (!sessions.length) {
+
+            list.innerHTML =
+                '<p class="muted-panel">No sessions yet.</p>';
+
+            return;
+        }
+
+
+        list.innerHTML =
+            sessions.map(session => {
+
+                const date =
+                    new Date(
+                        session.scheduledDate
+                    );
+
+
+                const feedback =
+                    session.feedback?.fromMentee;
+
+
+                return `
+
+                    <article class="workflow-card">
+
+                        <div>
+
+                            <strong>
+                                ${session.topic}
+                            </strong>
+
+                            <p>
+                                ${date.toLocaleString()}
+                                ·
+                                ${session.status}
+                            </p>
+
+                        </div>
+
+
+                        ${
+                            feedback
+
+                            ?
+
+                            `
+                                <p class="workflow-success">
+                                    Feedback submitted:
+                                    ${feedback}
+                                </p>
+                            `
+
+                            :
+
+                            `
+
+                                <div class="feedback-row">
+
+                                    <textarea
+                                        id="feedback-${session.id}"
+                                        placeholder="Write your feedback..."
+                                    ></textarea>
+
+
+                                    <button
+                                        class="btn btn-primary btn-small feedback-mentee-btn"
+                                        data-id="${session.id}"
+                                    >
+                                        Submit feedback
+                                    </button>
+
+                                </div>
+
+                            `
+                        }
+
+                    </article>
+
+                `;
+            }).join('');
+
+
+        document
+            .querySelectorAll(
+                '.feedback-mentee-btn'
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    'click',
+                    async () => {
+
+                        const id =
+                            button.dataset.id;
+
+
+                        const textarea =
+                            document.getElementById(
+                                `feedback-${id}`
+                            );
+
+
+                        const text =
+                            textarea.value.trim();
+
+
+                        if (!text) {
+
+                            alert(
+                                'Please write your feedback.'
+                            );
+
+                            return;
+                        }
+
+
+                        button.disabled =
+                            true;
+
+
+                        const response =
+                            await apiPut(
+                                `/sessions/${id}/feedback`,
+                                {
+                                    fromMentee:
+                                        text
+                                }
+                            );
+
+
+                        if (!response.ok) {
+
+                            alert(
+                                response.data.error ||
+                                'Could not submit feedback.'
+                            );
+
+                            button.disabled =
+                                false;
+
+                            return;
+                        }
+
+
+                        await loadSessions();
+
+                    }
+                );
+
+            });
+    }
+
+
+    // ==========================================
+    // SEND BUTTON
+    // ==========================================
+
+    document.getElementById(
+        'sendRequestBtn'
+    ).addEventListener(
+        'click',
+        sendRequest
+    );
+
+
+    // ==========================================
+    // INITIAL LOAD
+    // ==========================================
+
+    try {
+
+        await loadRequests();
+
+        await loadMentors();
+
+        await loadSessions();
+
+    } catch (error) {
+
+        console.error(
+            'Mentee dashboard error:',
+            error
+        );
+
+    }
+
+})();
+
+</script>
 </body>
 </html>
