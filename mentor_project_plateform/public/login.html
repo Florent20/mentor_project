@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorConnect | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+  <a class="logo auth-logo" href="index.html"><span>MC</span> MentorConnect</a>
+  <main class="auth-layout">
+    <section class="auth-promo">
+      <span class="eyebrow">WELCOME BACK</span>
+      <h1>Keep growing with your mentor.</h1>
+      <p>Access your mentorship requests, sessions, relationships, and progress from one place.</p>
+      <div class="quote">"Great things happen when knowledge meets opportunity."</div>
+    </section>
+    <section class="auth-card">
+      <a class="back-link" href="index.html">← Back to home</a>
+      <h2>Welcome back 👋</h2><p class="muted">Sign in to continue your mentorship journey.</p>
+
+      <p id="loginError" class="form-error" style="display:none; color:#d33; margin-bottom:12px;"></p>
+
+      <form id="loginForm">
+        <label>Email address<input type="email" id="email" placeholder="you@example.com" required></label>
+        <label>Password<div class="password-wrap"><input type="password" id="password" placeholder="Enter your password" required><button type="button" class="show-password" id="togglePassword">Show</button></div></label>
+        <div class="form-row"><label class="check"><input type="checkbox"> Remember me</label><a href="#">Forgot password?</a></div>
+        <button class="btn btn-primary full" type="submit" id="loginBtn">Login</button>
+      </form>
+      <div class="divider"><span>or</span></div>
+      <p class="auth-switch">Don't have an account? <a href="register.html">Create one</a></p>
+    </section>
+  </main>
+  <script src="js/main.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const loginBtn = document.getElementById('loginBtn');
+
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const pwd = document.getElementById('password');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.style.display = 'none';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing in...';
+
+      try {
+        const res = await apiPost('/auth/login', { email, password });
+
+        if (!res.ok) {
+          loginError.textContent = res.data.error || 'Login failed. Please try again.';
+          loginError.style.display = 'block';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+          return;
+        }
+
+        saveCurrentUser(res.data);
+        window.location.href = res.data.role === 'mentor' ? 'mentor-dashboard.html' : 'dashboard.html';
+      } catch (err) {
+        loginError.textContent = 'Could not reach the server. Is it running?';
+        loginError.style.display = 'block';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorConnect | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-body">
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span>MC</span> MentorConnect</a>
+    <nav class="side-nav">
+      <a class="active" href="#"><span>⌂</span> Dashboard</a>
+      <a href="#"><span>⌕</span> Find Mentors</a>
+      <a href="#"><span>✉</span> My Requests <b class="badge" id="navRequestsBadge">0</b></a>
+      <a href="#"><span>♧</span> My Mentorship</a>
+      <a href="#"><span>◷</span> Sessions <b class="badge" id="navSessionsBadge">0</b></a>
+      <a href="#"><span>★</span> Feedback</a>
+      <a href="#"><span>♙</span> My Profile</a>
+    </nav>
+    <div class="sidebar-bottom"><a href="#"><span>⚙</span> Settings</a><a href="index.html" id="logoutLink"><span>↪</span> Logout</a></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <button class="mobile-sidebar" aria-label="Open sidebar">☰</button>
+      <div class="search"><span>⌕</span><input type="search" placeholder="Search mentors, skills..."></div>
+      <div class="header-actions"><button class="icon-btn">♧</button><div class="avatar" id="avatarInitials">--</div></div>
+    </header>
+
+    <div class="dashboard-content">
+      <section class="welcome"><div><span class="eyebrow">MENTEE DASHBOARD</span><h1 id="welcomeHeading">Good morning 👋</h1><p>Continue your mentorship journey and keep making progress.</p></div><a class="btn btn-primary" href="#">Find a mentor <span>→</span></a></section>
+
+      <section class="stats-grid">
+        <article class="stat-card"><div class="stat-icon purple">✉</div><div><span>Pending requests</span><strong id="statPending">0</strong><small id="statPendingSub">&nbsp;</small></div></article>
+        <article class="stat-card"><div class="stat-icon cyan">♧</div><div><span>Active mentorship</span><strong id="statActive">0</strong><small id="statActiveSub">&nbsp;</small></div></article>
+        <article class="stat-card"><div class="stat-icon orange">◷</div><div><span>Upcoming sessions</span><strong id="statUpcoming">0</strong><small id="statUpcomingSub">&nbsp;</small></div></article>
+        <article class="stat-card"><div class="stat-icon green">★</div><div><span>My progress</span><strong id="statProgress">0%</strong><small id="statProgressSub">&nbsp;</small></div></article>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="panel">
+          <div class="panel-heading"><div><h2>Recommended mentors</h2><p>Based on your interests and goals</p></div><a href="#">View all →</a></div>
+          <div class="mentor-list" id="mentorList">
+            <p class="muted-panel">Loading mentors...</p>
+          </div>
+        </section>
+
+        <aside class="panel upcoming" id="nextSessionPanel">
+          <div class="panel-heading"><div><h2>Next session</h2><p>Your upcoming mentorship</p></div></div>
+          <p class="muted-panel" id="noSessionMsg" style="display:none;">No upcoming sessions yet.</p>
+          <div id="nextSessionDetails">
+            <div class="session-date"><strong id="sessionDay">--</strong><span id="sessionMonthYear">--</span></div>
+            <h3 id="sessionTopic">--</h3><p class="muted-panel" id="sessionWith">--</p>
+            <div class="session-meta"><span id="sessionTime">◷ --</span><span>◉ Online</span></div>
+            <button class="btn btn-session full">View session</button>
+          </div>
+        </aside>
+      </div>
+
+      <section class="panel progress-panel">
+        <div class="panel-heading"><div><h2>Mentorship progress</h2><p>Backend development learning path</p></div><span class="progress-percent" id="progressPercentLabel">0%</span></div>
+        <div class="progress-track"><span id="progressBarFill" style="width:0%"></span></div>
+        <div class="progress-items"><span>○ Goals defined</span><span>○ First session</span><span>○ API fundamentals</span><span>○ Build final project</span></div>
+      </section>
+    </div>
+  </main>
+  <script src="js/main.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    (async function initDashboard() {
+      const user = requireLogin();
+      if (!user) return; // requireLogin already redirects to login.html
+
+      // --- Header / greeting ---
+      const nameParts = (user.name || '').trim().split(' ');
+      const firstName = nameParts[0] || 'there';
+      const initials = ((nameParts[0]?.[0] || '') + (nameParts[nameParts.length - 1]?.[0] || '')).toUpperCase();
+
+      document.getElementById('welcomeHeading').textContent = `Good morning, ${firstName} 👋`;
+      document.getElementById('avatarInitials').textContent = initials || '--';
+
+      document.getElementById('logoutLink').addEventListener('click', () => {
+        clearCurrentUser();
+      });
+
+      // Mentors now have their own dashboard — send them there
+      if (user.role !== 'mentee') {
+        window.location.href = 'mentor-dashboard.html';
+        return;
+      }
+
+      try {
+        // --- Requests (pending + active) ---
+        const requestsRes = await apiGet(`/requests/mentee/${user.id}`);
+        const requests = requestsRes.ok ? requestsRes.data : [];
+        const pending = requests.filter(r => r.status === 'pending');
+        const accepted = requests.filter(r => r.status === 'accepted');
+
+        document.getElementById('statPending').textContent = pending.length;
+        document.getElementById('navRequestsBadge').textContent = pending.length;
+        document.getElementById('statActive').textContent = accepted.length;
+
+        // --- Sessions (upcoming) ---
+        const sessionsRes = await apiGet(`/sessions/upcoming?menteeId=${user.id}`);
+        const upcomingSessions = sessionsRes.ok ? sessionsRes.data : [];
+
+        document.getElementById('statUpcoming').textContent = upcomingSessions.length;
+        document.getElementById('navSessionsBadge').textContent = upcomingSessions.length;
+
+        if (upcomingSessions.length > 0) {
+          // sort by date, take the soonest
+          upcomingSessions.sort((a, b) => new Date(a.scheduledDate) - new Date(b.scheduledDate));
+          const next = upcomingSessions[0];
+          const d = new Date(next.scheduledDate);
+
+          document.getElementById('statUpcomingSub').textContent =
+            `Next: ${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+
+          document.getElementById('sessionDay').textContent = d.getDate();
+          document.getElementById('sessionMonthYear').innerHTML =
+            `${d.toLocaleDateString(undefined, { month: 'short' })}<br>${d.getFullYear()}`;
+          document.getElementById('sessionTopic').textContent = next.topic;
+          document.getElementById('sessionTime').textContent =
+            `◷ ${d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}`;
+
+          // Look up mentor name for "with X"
+          const mentorRes = await apiGet(`/mentors/${next.mentorId}`);
+          document.getElementById('sessionWith').textContent =
+            mentorRes.ok ? `with ${mentorRes.data.name}` : '';
+        } else {
+          document.getElementById('nextSessionDetails').style.display = 'none';
+          document.getElementById('noSessionMsg').style.display = 'block';
+        }
+
+        // --- Progress ---
+        const progress = typeof user.progress === 'number' ? user.progress : 0;
+        document.getElementById('statProgress').textContent = `${progress}%`;
+        document.getElementById('progressPercentLabel').textContent = `${progress}%`;
+        document.getElementById('progressBarFill').style.width = `${progress}%`;
+
+        // --- Recommended mentors (all mentors, first 3) ---
+        const mentorsRes = await apiGet('/mentors');
+        const mentorList = document.getElementById('mentorList');
+
+        if (mentorsRes.ok && mentorsRes.data.length > 0) {
+          mentorList.innerHTML = mentorsRes.data.slice(0, 3).map(m => {
+            const mInitials = (m.name || '').split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
+            const skillChips = (m.skills || []).slice(0, 3).map(s => `<span>${s}</span>`).join('');
+            return `
+              <article class="mentor-row">
+                <div class="mentor-avatar blue">${mInitials}</div>
+                <div class="mentor-info">
+                  <h3>${m.name}</h3>
+                  <p>${m.bio || 'Mentor'}</p>
+                  <div class="chips">${skillChips}</div>
+                </div>
+                <button class="btn btn-view btn-small" data-mentor-id="${m.id}">View profile</button>
+              </article>`;
+          }).join('');
+        } else {
+          mentorList.innerHTML = '<p class="muted-panel">No mentors available yet.</p>';
+        }
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 // ...
 
 app.use(express.json());
+app.use(express.static('public'));
 
 // Catch malformed JSON
 app.use((err, req, res, next) => {
@@ -22,6 +23,7 @@ app.use((err, req, res, next) => {
 app.get('/', (req, res) => {
   res.send('Mentor-Mentee Platform API is running');
 });
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/mentors', mentorRoutes);
