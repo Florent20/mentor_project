@@ -1,9 +1,11 @@
-{
-  "id": 1,
-  "mentorId": 1,
-  "menteeId": 1,
-  "status": "pending",
-  "message": "I'd love your guidance on backend development.",
-  "createdAt": "2026-08-12T10:00:00Z",
-  "respondedAt": null
-}
+[
+  {
+    "id": 1,
+    "mentorId": 1,
+    "menteeId": 1,
+    "status": "pending",
+    "message": "I'd love your guidance on backend development.",
+    "createdAt": "2026-08-12T10:00:00Z",
+    "respondedAt": null
+  }
+]

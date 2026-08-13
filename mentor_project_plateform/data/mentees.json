@@ -1,7 +1,29 @@
-{
-  "id": 1,
-  "name": "John Smith",
-  "email": "john@example.com",
-  "goals": "Learn backend development and get my first job.",
-  "createdAt": "2026-08-12T10:00:00Z"
-}
+[
+  {
+    "id": 1,
+    "name": "John Smith",
+    "email": "john@example.com",
+    "password": "123456",
+    "goals": "Learn backend development and get my first job.",
+    "progress": 0,
+    "createdAt": "2026-08-12T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Ngo Junior",
+    "email": "ngojunior@gmail.com",
+    "password": "12345678",
+    "goals": "",
+    "progress": 0,
+    "createdAt": "2026-08-13T13:50:39.835Z"
+  },
+  {
+    "id": 3,
+    "name": "Bwam Louis",
+    "email": "louisflorentbwam@gmail.com",
+    "password": "jesuschrist07",
+    "goals": "",
+    "progress": 0,
+    "createdAt": "2026-08-13T13:59:52.919Z"
+  }
+]

@@ -1,8 +1,24 @@
-{
-  "id": 1,
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "bio": "Senior backend developer with 5 years experience.",
-  "skills": ["Node.js", "Career coaching", "System design"],
-  "createdAt": "2026-08-12T10:00:00Z"
-}
+[
+  {
+    "id": 1,
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "password": "123456",
+    "bio": "Senior backend developer with 5 years experience.",
+    "skills": [
+      "Node.js",
+      "Career coaching",
+      "System design"
+    ],
+    "createdAt": "2026-08-12T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Stella Nji",
+    "email": "stellanji@gmail.com",
+    "password": "12345678",
+    "bio": "",
+    "skills": [],
+    "createdAt": "2026-08-13T14:02:51.269Z"
+  }
+]
