@@ -12,9 +12,9 @@
     "id": 2,
     "mentorId": 2,
     "menteeId": 3,
-    "status": "pending",
+    "status": "accepted",
     "message": "",
     "createdAt": "2026-08-13T16:06:24.299Z",
-    "respondedAt": null
+    "respondedAt": "2026-08-13T16:39:36.809Z"
   }
 ]

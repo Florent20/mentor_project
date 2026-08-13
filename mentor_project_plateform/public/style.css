@@ -1,15 +1,30 @@
-/* ==========================================
+/* =====================================================
    MENTOR-MENTEE WORKFLOW STYLES
-   ========================================== */
+   Matches the black and white MentorHub design
+===================================================== */
+
+/* =====================
+   WORKFLOW PANELS
+===================== */
 
 .workflow-panel {
-    margin-top: 24px;
+    margin-top: 28px;
+    padding: 24px;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #111, #080808);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
+
+
+/* =====================
+   FORM ROW
+===================== */
 
 .workflow-form-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 18px;
     align-items: end;
 }
 
@@ -17,6 +32,8 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    color: #f5f5f5;
     font-weight: 600;
     font-size: 14px;
 }
@@ -24,202 +41,340 @@
 .workflow-form-row input,
 .workflow-form-row select {
     width: 100%;
+    min-height: 46px;
+
     padding: 12px 14px;
-    border: 1px solid #d9dee8;
-    border-radius: 8px;
-    background: #fff;
+
+    border: 1px solid #383838;
+    border-radius: 10px;
+
+    background: #181818;
+    color: #fff;
+
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s ease;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
     box-sizing: border-box;
+}
+
+.workflow-form-row input::placeholder {
+    color: #777;
+}
+
+.workflow-form-row select {
+    cursor: pointer;
+}
+
+.workflow-form-row select option {
+    background: #181818;
+    color: #fff;
 }
 
 .workflow-form-row input:focus,
 .workflow-form-row select:focus {
-    border-color: #2563eb;
+    border-color: #fff;
+    background: #202020;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
 }
 
 
-/* ==========================================
+/* =====================
    WORKFLOW CARDS
-   ========================================== */
+===================== */
 
 .workflow-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding: 18px;
-    margin-bottom: 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background: #fff;
+
+    padding: 20px;
+    margin-bottom: 14px;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+
+    background: #111;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.workflow-card:hover {
+    transform: translateY(-2px);
+    border-color: #555;
+    background: #161616;
 }
 
 .workflow-card strong {
     display: block;
     margin-bottom: 6px;
+
+    color: #fff;
     font-size: 16px;
+    font-weight: 700;
 }
 
 .workflow-card p {
     margin: 0;
-    color: #6b7280;
+    color: #a8a8a8;
     font-size: 14px;
 }
 
 
-/* ==========================================
-   REQUEST / MENTEE ROWS
-   ========================================== */
+/* =====================
+   MENTOR / MENTEE ROWS
+===================== */
 
 .mentor-row {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background: #fff;
+
+    padding: 20px 24px; /* Space around the icon */
+
+    margin-bottom: 14px;
+    border: 1px solid #292929;
+    border-radius: 14px;
+    background: #111;
+
+    transition: 0.25s ease;
+}
+
+.mentor-row:hover {
+    transform: translateY(-2px);
+    border-color: #555;
+    background: #161616;
 }
 
 .mentor-info {
     flex: 1;
+    min-width: 0;
 }
 
 .mentor-info h3 {
     margin: 0 0 5px;
+
+    color: #fff;
     font-size: 16px;
+    font-weight: 700;
 }
 
 .mentor-info p {
-    margin: 0 0 8px;
-    color: #6b7280;
+    margin: 0 0 10px;
+
+    color: #9a9a9a;
     font-size: 14px;
 }
 
 
-/* ==========================================
-   BUTTONS
-   ========================================== */
+/* =====================
+   WORKFLOW BUTTONS
+===================== */
 
 .btn-small {
-    padding: 9px 14px;
+    padding: 10px 16px;
+    border-radius: 9px;
+
     font-size: 13px;
     white-space: nowrap;
 }
 
 .btn:disabled {
-    opacity: 0.6;
+    opacity: 0.45;
     cursor: not-allowed;
+    transform: none !important;
 }
 
 
-/* ==========================================
-   CHIPS
-   ========================================== */
+/* =====================
+   GOAL / SKILL CHIPS
+===================== */
 
 .chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 7px;
 }
 
 .chips span {
-    padding: 4px 9px;
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 10px;
+
+    border: 1px solid #3a3a3a;
     border-radius: 20px;
-    background: #eef2ff;
-    color: #374151;
+
+    background: #1d1d1d;
+    color: #d7d7d7;
+
     font-size: 12px;
+    font-weight: 500;
 }
 
 
-/* ==========================================
+/* =====================
    FEEDBACK
-   ========================================== */
+===================== */
 
 .feedback-row {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 12px;
+    align-items: flex-end;
+    gap: 12px;
+
+    margin-top: 16px;
 }
 
 .feedback-row textarea {
+    flex: 1;
     min-width: 280px;
-    min-height: 70px;
-    padding: 10px 12px;
-    border: 1px solid #d9dee8;
-    border-radius: 8px;
+    min-height: 80px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #383838;
+    border-radius: 10px;
+
+    background: #181818;
+    color: #fff;
+
     resize: vertical;
     font-family: inherit;
     font-size: 14px;
+
     outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
     box-sizing: border-box;
 }
 
+.feedback-row textarea::placeholder {
+    color: #777;
+}
+
 .feedback-row textarea:focus {
-    border-color: #2563eb;
+    border-color: #fff;
+    background: #202020;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
 }
 
 .workflow-success {
-    color: #15803d !important;
+    color: #8fdb9c !important;
     font-weight: 600;
 }
 
 
-/* ==========================================
-   MESSAGES
-   ========================================== */
+/* =====================
+   WORKFLOW MESSAGES
+===================== */
 
 .workflow-message {
-    margin-top: 12px;
+    margin-top: 14px;
+
+    padding: 12px 14px;
+
+    border-left: 3px solid #fff;
+    border-radius: 8px;
+
+    background: #181818;
+    color: #d6d6d6;
+
     font-size: 14px;
-    color: #2563eb;
 }
 
 .muted-panel {
-    padding: 20px;
+    padding: 28px 20px;
+
     text-align: center;
-    color: #6b7280;
-    background: #f9fafb;
-    border-radius: 8px;
+    color: #8f8f8f;
+
+    border: 1px dashed #353535;
+    border-radius: 12px;
+
+    background: #101010;
 }
 
 
-/* ==========================================
+/* =====================
    AVATARS
-   ========================================== */
+===================== */
 
 .mentor-avatar {
-    width: 46px;
-    height: 46px;
-    min-width: 46px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 50px; /* Prevents shrinking */
+    
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border: 1px solid #444;
+    border-radius: 50%;
+
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1;
+
     font-weight: 700;
     font-size: 14px;
 }
 
+.mentor-avatar,
+.mentee-avatar {
+    width: 30px;
+    height: 30px;
+    min-width: 50px;
+    min-height: 50px;
+    flex: 0 0 50px;
+
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    margin-left: 4px; /* Extra space from the left side */
+}
+
+
+
 .mentor-avatar.blue {
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #202020;
+    color: #fff;
+    border-color: #555;
 }
 
 .mentor-avatar.green {
-    background: #dcfce7;
-    color: #15803d;
+    background: #161616;
+    color: #e5e5e5;
+    border-color: #4a4a4a;
 }
 
 
-/* ==========================================
-   MOBILE RESPONSIVENESS
-   ========================================== */
+/* =====================
+   TABLET / MOBILE
+===================== */
 
 @media (max-width: 900px) {
+
+    .workflow-panel {
+        padding: 20px;
+    }
 
     .workflow-form-row {
         grid-template-columns: 1fr;
@@ -228,6 +383,10 @@
     .workflow-card {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .workflow-card .btn {
+        width: 100%;
     }
 
     .mentor-row {
@@ -253,12 +412,15 @@
 @media (max-width: 600px) {
 
     .workflow-panel {
-        margin-top: 16px;
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 12px;
     }
 
     .mentor-row {
-        padding: 12px;
+        padding: 14px;
         gap: 12px;
+        border-radius: 12px;
     }
 
     .mentor-info {
@@ -271,12 +433,20 @@
     }
 
     .workflow-form-row input,
-    .workflow-form-row select {
+    .workflow-form-row select,
+    .feedback-row textarea {
         font-size: 16px;
     }
 
     .workflow-card {
-        padding: 14px;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .mentor-avatar {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
     }
 }
 /* =====================================================
@@ -324,7 +494,7 @@ input {
     align-items: center;
     gap: 10px;
 
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 800;
 
     white-space: nowrap;
@@ -335,8 +505,8 @@ input {
     display: grid;
     place-items: center;
 
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
 
     border-radius: 10px;
 
@@ -497,16 +667,47 @@ input {
    HERO
 ===================================================== */
 
-.hero {
+.hero { 
+    min-height: 650px; 
+    display: flex; 
+    align-items: center; 
+    padding: 120px 8% 70px; 
+    position: relative; 
+    z-index: 1;
+}
+
+/* =========================
+   HERO BACKGROUND SLIDER
+========================= */
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
     min-height: 650px;
 
-    display: flex;
-    align-items: center;
+    overflow: hidden;
+    z-index: 0;
+}
 
-    padding: 120px 8% 70px;
+.hero-bg {
+    position: absolute;
+    inset: 0;
 
-    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
+    opacity: 0;
+
+    animation: heroBackgroundFade 15s infinite;
+}
+
+
+/* First image */
+.bg1 {
     background-image:
         linear-gradient(
             90deg,
@@ -516,9 +717,62 @@ input {
         ),
         url("images/mentor-background.jpg");
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    animation-delay: 0s;
+}
+
+
+/* Second image */
+.bg2 {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.65) 50%,
+            rgba(0, 0, 0, 0.25) 100%
+        ),
+        url("images/image-mentee.jpg");
+
+    animation-delay: 5s;
+}
+
+
+/* Third image */
+.bg3 {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.65) 50%,
+            rgba(0, 0, 0, 0.25) 100%
+        ),
+        url("images/image-mentor.jpg");
+
+    animation-delay: 10s;
+}
+
+
+/* Smooth fade animation */
+@keyframes heroBackgroundFade {
+
+    0% {
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    38% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .hero-content {
@@ -1457,6 +1711,11 @@ background:
     flex-direction: column;
 
     z-index: 30;
+}
+
+.sidebar .logo {
+    font-size: 20px;
+    color: white;
 }
 
 
@@ -2447,4 +2706,93 @@ background:
         padding: 18px;
     }
 
+}
+
+/* ==========================================
+   MOBILE NAVIGATION - ALL BLACK DESIGN
+========================================== */
+
+@media (max-width: 768px) {
+
+    /* Navigation dropdown container */
+    .nav-links {
+        background: #000000 !important;
+        border: 1px solid #333333;
+        border-radius: 12px;
+        padding: 15px !important;
+
+        position: absolute;
+        top: 70px;
+        left: 5%;
+        right: 5%;
+
+        width: auto !important;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+
+        z-index: 9999;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Show navigation when menu is clicked */
+    .nav-links.active {
+        display: flex !important;
+        background: #000000 !important;
+    }
+
+    /* All navigation links */
+    .nav-links a {
+        display: block;
+        width: 100%;
+
+        padding: 12px 15px !important;
+        box-sizing: border-box;
+
+        background: #000000 !important;
+        color: #ffffff !important;
+
+        text-decoration: none;
+        border-radius: 8px;
+    }
+
+    /* Hover / active link */
+    .nav-links a:hover,
+    .nav-links a.active {
+        background: #111111 !important;
+        color: #ffffff !important;
+    }
+
+    /* Get Started button */
+    .nav-links .btn,
+    .nav-links .btn-primary,
+    .nav-links a.btn {
+        display: block !important;
+        width: 100% !important;
+
+        padding: 13px 15px !important;
+        margin-top: 5px;
+
+        box-sizing: border-box;
+
+        background: #000000 !important;
+        color: #ffffff !important;
+
+        border: 1px solid #ffffff !important;
+        border-radius: 8px;
+
+        text-align: center;
+        font-weight: 700;
+    }
+
+    /* Get Started hover */
+    .nav-links .btn:hover,
+    .nav-links .btn-primary:hover,
+    .nav-links a.btn:hover {
+        background: #222222 !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+    }
 }
