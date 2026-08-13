@@ -43,7 +43,7 @@ input {
     align-items: center;
     gap: 10px;
 
-    font-size: 19px;
+    font-size: 23px;
     font-weight: 800;
 
     white-space: nowrap;
@@ -54,15 +54,15 @@ input {
     display: grid;
     place-items: center;
 
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
 
     border-radius: 10px;
 
     background: white;
     color: black;
 
-    font-size: 13px;
+    font-size: 15px;
 }
 
 
@@ -79,15 +79,18 @@ input {
 
     padding: 0 6%;
 
-    border-bottom: 1px solid black;
+    border-bottom: none;
 
-    background: black;
+    background: transparent;
 
-    position: sticky;
+    position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
 
     z-index: 20;
 }
+
 
 .logo {
     color: white;
@@ -97,10 +100,9 @@ input {
 .main-nav {
     display: flex;
     align-items: center;
-
     gap: 28px;
 
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 600;
 
     color: white;
@@ -217,24 +219,37 @@ input {
 .hero {
     min-height: 650px;
 
-    display: grid;
-
-    grid-template-columns: 1.05fr 0.95fr;
-
+    display: flex;
     align-items: center;
 
-    padding: 70px 8%;
+    padding: 120px 8% 70px;
 
-    gap: 30px;
+    position: relative;
 
-    background:
+    background-image:
         linear-gradient(
-            135deg,
-            rgb(12, 12, 12) 0%,
-            rgb(5, 5, 5) 100%
-        );
+            90deg,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.65) 50%,
+            rgba(0, 0, 0, 0.25) 100%
+        ),
+        url("images/mentor-background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 650px;
+}
+
+.hero-visual {
+    display: none;
+}
 
 .eyebrow {
     font-size: 11px;
@@ -306,13 +321,13 @@ input {
    HERO ILLUSTRATION
 ===================================================== */
 
-.hero-visual {
+/* .hero-visual {
     min-height: 480px;
 
     display: grid;
 
     place-items: center;
-}
+} */
 
 
 .mentor-illustration {
