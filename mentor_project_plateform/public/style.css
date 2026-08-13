@@ -1,3 +1,284 @@
+/* ==========================================
+   MENTOR-MENTEE WORKFLOW STYLES
+   ========================================== */
+
+.workflow-panel {
+    margin-top: 24px;
+}
+
+.workflow-form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: end;
+}
+
+.workflow-form-row label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.workflow-form-row input,
+.workflow-form-row select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.workflow-form-row input:focus,
+.workflow-form-row select:focus {
+    border-color: #2563eb;
+}
+
+
+/* ==========================================
+   WORKFLOW CARDS
+   ========================================== */
+
+.workflow-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    margin-bottom: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.workflow-card strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.workflow-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   REQUEST / MENTEE ROWS
+   ========================================== */
+
+.mentor-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.mentor-info {
+    flex: 1;
+}
+
+.mentor-info h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.mentor-info p {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+
+.btn-small {
+    padding: 9px 14px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   CHIPS
+   ========================================== */
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chips span {
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: #374151;
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+.feedback-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.feedback-row textarea {
+    min-width: 280px;
+    min-height: 70px;
+    padding: 10px 12px;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.feedback-row textarea:focus {
+    border-color: #2563eb;
+}
+
+.workflow-success {
+    color: #15803d !important;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   MESSAGES
+   ========================================== */
+
+.workflow-message {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #2563eb;
+}
+
+.muted-panel {
+    padding: 20px;
+    text-align: center;
+    color: #6b7280;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+
+/* ==========================================
+   AVATARS
+   ========================================== */
+
+.mentor-avatar {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.mentor-avatar.blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.mentor-avatar.green {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+   ========================================== */
+
+@media (max-width: 900px) {
+
+    .workflow-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .workflow-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mentor-row {
+        flex-wrap: wrap;
+    }
+
+    .feedback-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .feedback-row textarea {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .feedback-row button {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .workflow-panel {
+        margin-top: 16px;
+    }
+
+    .mentor-row {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .mentor-info {
+        min-width: 0;
+        width: calc(100% - 60px);
+    }
+
+    .mentor-row .btn {
+        width: 100%;
+    }
+
+    .workflow-form-row input,
+    .workflow-form-row select {
+        font-size: 16px;
+    }
+
+    .workflow-card {
+        padding: 14px;
+    }
+}
 /* =====================================================
    RESET
 ===================================================== */

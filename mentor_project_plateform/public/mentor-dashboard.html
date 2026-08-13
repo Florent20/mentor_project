@@ -118,6 +118,107 @@
     </div>
 
 </section>
+
+<section class="panel workflow-panel">
+
+    <div class="panel-heading">
+
+        <div>
+
+            <h2>Schedule a session</h2>
+
+            <p>
+                Schedule a mentorship session with one of your accepted mentees.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <p
+        id="scheduleMessage"
+        class="workflow-message"
+    ></p>
+
+
+    <div class="workflow-form-row">
+
+        <label>
+            Mentee
+
+            <select id="scheduleMentee">
+
+                <option value="">
+                    Select a mentee
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Date & time
+
+            <input
+                id="scheduleDate"
+                type="datetime-local"
+            >
+
+        </label>
+
+
+        <label>
+            Topic
+
+            <input
+                id="scheduleTopic"
+                type="text"
+                placeholder="e.g. REST API fundamentals"
+            >
+
+        </label>
+
+
+        <button
+            class="btn btn-primary"
+            id="scheduleBtn"
+            type="button"
+        >
+            Schedule session
+        </button>
+
+    </div>
+
+</section>
+
+<section class="panel workflow-panel">
+
+    <div class="panel-heading">
+
+        <div>
+
+            <h2>Session feedback</h2>
+
+            <p>
+                Submit feedback for your mentees.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="mentorSessionsList">
+
+        <p class="muted-panel">
+            Loading sessions...
+        </p>
+
+    </div>
+
+</section>
     </div>
   </main>
   <script src="main.js"></script>
