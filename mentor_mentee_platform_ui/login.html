@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorConnect | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+  <a class="logo auth-logo" href="index.html"><span>MC</span> MentorConnect</a>
+  <main class="auth-layout">
+    <section class="auth-promo">
+      <span class="eyebrow">WELCOME BACK</span>
+      <h1>Keep growing with your mentor.</h1>
+      <p>Access your mentorship requests, sessions, relationships, and progress from one place.</p>
+      <div class="quote">“Great things happen when knowledge meets opportunity.”</div>
+    </section>
+    <section class="auth-card">
+      <a class="back-link" href="index.html">← Back to home</a>
+      <h2>Welcome back 👋</h2><p class="muted">Sign in to continue your mentorship journey.</p>
+      <form>
+        <label>Email address<input type="email" placeholder="you@example.com" required></label>
+        <label>Password<div class="password-wrap"><input type="password" placeholder="Enter your password" required><button type="button" class="show-password">Show</button></div></label>
+        <div class="form-row"><label class="check"><input type="checkbox"> Remember me</label><a href="#">Forgot password?</a></div>
+        <button class="btn btn-primary full" type="submit">Login</button>
+      </form>
+      <div class="divider"><span>or</span></div>
+      <p class="auth-switch">Don't have an account? <a href="register.html">Create one</a></p>
+    </section>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+</html>

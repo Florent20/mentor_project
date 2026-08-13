@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorConnect | Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-body">
+  <a class="logo auth-logo" href="index.html"><span>MC</span> MentorConnect</a>
+  <main class="auth-layout">
+    <section class="auth-promo">
+      <span class="eyebrow">JOIN THE COMMUNITY</span>
+      <h1>Start your mentorship journey.</h1>
+      <p>Create your profile, connect with the right people, and turn your goals into progress.</p>
+      <ul class="check-list"><li>Build a professional profile</li><li>Find or become a mentor</li><li>Manage mentorship sessions</li><li>Share and receive feedback</li></ul>
+    </section>
+    <section class="auth-card">
+      <a class="back-link" href="index.html">← Back to home</a>
+      <h2>Create your account</h2><p class="muted">Tell us how you want to use MentorConnect.</p>
+      <form>
+        <div class="role-select">
+          <label class="role-option"><input type="radio" name="role" value="mentee" checked><span>🎓<b>Mentee</b><small>I want to learn and grow</small></span></label>
+          <label class="role-option"><input type="radio" name="role" value="mentor"><span>🧑🏽‍🏫<b>Mentor</b><small>I want to share my expertise</small></span></label>
+        </div>
+        <div class="two-col"><label>First name<input type="text" placeholder="Bwam" required></label><label>Last name<input type="text" placeholder="Florent" required></label></div>
+        <label>Email address<input type="email" placeholder="you@example.com" required></label>
+        <label>Password<input type="password" placeholder="Create a password" required></label>
+        <label class="check"><input type="checkbox" required> I agree to the terms and privacy policy.</label>
+        <button class="btn btn-primary full" type="submit">Create account</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+    </section>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+</html>

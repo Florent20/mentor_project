@@ -1,0 +1,70 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorConnect | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span>MC</span> MentorConnect</a>
+    <nav class="side-nav">
+      <a class="active" href="#"><span>⌂</span> Dashboard</a>
+      <a href="#"><span>⌕</span> Find Mentors</a>
+      <a href="#"><span>✉</span> My Requests <b class="badge">3</b></a>
+      <a href="#"><span>♧</span> My Mentorship</a>
+      <a href="#"><span>◷</span> Sessions <b class="badge">2</b></a>
+      <a href="#"><span>★</span> Feedback</a>
+      <a href="#"><span>♙</span> My Profile</a>
+    </nav>
+    <div class="sidebar-bottom"><a href="#"><span>⚙</span> Settings</a><a href="index.html"><span>↪</span> Logout</a></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <button class="mobile-sidebar" aria-label="Open sidebar">☰</button>
+      <div class="search"><span>⌕</span><input type="search" placeholder="Search mentors, skills..."></div>
+      <div class="header-actions"><button class="icon-btn">♧</button><div class="avatar">FB</div></div>
+    </header>
+
+    <div class="dashboard-content">
+      <section class="welcome"><div><span class="eyebrow">MENTEE DASHBOARD</span><h1>Good morning, Florent 👋</h1><p>Continue your mentorship journey and keep making progress.</p></div><a class="btn btn-primary" href="#">Find a mentor <span>→</span></a></section>
+
+      <section class="stats-grid">
+        <article class="stat-card"><div class="stat-icon purple">✉</div><div><span>Pending requests</span><strong>3</strong><small>+1 this week</small></div></article>
+        <article class="stat-card"><div class="stat-icon cyan">♧</div><div><span>Active mentorship</span><strong>1</strong><small>1 ongoing relationship</small></div></article>
+        <article class="stat-card"><div class="stat-icon orange">◷</div><div><span>Upcoming sessions</span><strong>2</strong><small>Next: Aug 15</small></div></article>
+        <article class="stat-card"><div class="stat-icon green">★</div><div><span>My progress</span><strong>75%</strong><small>+12% this month</small></div></article>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="panel">
+          <div class="panel-heading"><div><h2>Recommended mentors</h2><p>Based on your interests and goals</p></div><a href="#">View all →</a></div>
+          <div class="mentor-list">
+            <article class="mentor-row"><div class="mentor-avatar blue">JD</div><div class="mentor-info"><h3>John Doe <span class="verified">✓</span></h3><p>Senior Software Engineer</p><div class="chips"><span>JavaScript</span><span>Node.js</span><span>React</span></div></div><div class="rating">★ 4.8</div><button class="btn btn-view btn-small">View profile</button></article>
+            <article class="mentor-row"><div class="mentor-avatar pink">SA</div><div class="mentor-info"><h3>Sarah Anderson <span class="verified">✓</span></h3><p>Product Designer</p><div class="chips"><span>UI/UX</span><span>Figma</span><span>Design</span></div></div><div class="rating">★ 4.9</div><button class="btn btn-view btn-small">View profile</button></article>
+            <article class="mentor-row"><div class="mentor-avatar green">MK</div><div class="mentor-info"><h3>Michael Kim <span class="verified">✓</span></h3><p>Backend Developer</p><div class="chips"><span>Python</span><span>APIs</span><span>SQL</span></div></div><div class="rating">★ 4.7</div><button class="btn btn-view btn-small">View profile</button></article>
+          </div>
+        </section>
+
+        <aside class="panel upcoming">
+          <div class="panel-heading"><div><h2>Next session</h2><p>Your upcoming mentorship</p></div></div>
+          <div class="session-date"><strong>15</strong><span>Aug<br>2026</span></div>
+          <h3>Backend Development</h3><p class="muted-panel">with John Doe</p>
+          <div class="session-meta"><span>◷ 14:00 – 15:00</span><span>◉ Online</span></div>
+          <button class="btn btn-session full">View session</button>
+        </aside>
+      </div>
+
+      <section class="panel progress-panel">
+        <div class="panel-heading"><div><h2>Mentorship progress</h2><p>Backend development learning path</p></div><span class="progress-percent">75%</span></div>
+        <div class="progress-track"><span style="width:75%"></span></div> 
+        <div class="progress-items"><span class="done">✓ Goals defined</span><span class="done">✓ First session</span><span class="done">✓ API fundamentals</span><span>○ Build final project</span></div>
+      </section>
+    </div>
+  </main>
+  <script src="js/main.js"></script>
+</body>
+</html>
