@@ -1,9 +1,9 @@
 const { readData, writeData } = require('../utils/fileHelper');
+const { isValidId } = require('../utils/validators');
 
 const FILE_NAME = 'sessions.json';
 const REQUESTS_FILE = 'requests.json';
 
-// POST - create a new session (only for accepted requests)
 function createSession(req, res) {
   const { requestId, scheduledDate, topic } = req.body;
 
@@ -42,13 +42,11 @@ function createSession(req, res) {
   res.status(201).json(newSession);
 }
 
-// GET all sessions
 function getAllSessions(req, res) {
   const sessions = readData(FILE_NAME);
   res.status(200).json(sessions);
 }
 
-// GET upcoming sessions (optionally filter by mentor or mentee)
 function getUpcomingSessions(req, res) {
   const sessions = readData(FILE_NAME);
   const { mentorId, menteeId } = req.query;
@@ -65,8 +63,11 @@ function getUpcomingSessions(req, res) {
   res.status(200).json(upcoming);
 }
 
-// GET single session by ID
 function getSessionById(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid session ID' });
+  }
+
   const sessions = readData(FILE_NAME);
   const session = sessions.find(s => s.id === parseInt(req.params.id));
 
@@ -76,8 +77,11 @@ function getSessionById(req, res) {
   res.status(200).json(session);
 }
 
-// PUT - add feedback to a session (and mark completed)
 function addFeedback(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid session ID' });
+  }
+
   const { fromMentor, fromMentee } = req.body;
 
   const sessions = readData(FILE_NAME);
@@ -98,8 +102,11 @@ function addFeedback(req, res) {
   res.status(200).json(sessions[index]);
 }
 
-// PUT - cancel a session
 function cancelSession(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid session ID' });
+  }
+
   const sessions = readData(FILE_NAME);
   const index = sessions.findIndex(s => s.id === parseInt(req.params.id));
 

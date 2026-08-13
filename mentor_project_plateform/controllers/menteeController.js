@@ -1,15 +1,18 @@
 const { readData, writeData } = require('../utils/fileHelper');
+const { isValidId } = require('../utils/validators');
 
 const FILE_NAME = 'mentees.json';
 
-// GET all mentees
 function getAllMentees(req, res) {
   const mentees = readData(FILE_NAME);
   res.status(200).json(mentees);
 }
 
-// GET single mentee by ID
 function getMenteeById(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentee ID' });
+  }
+
   const mentees = readData(FILE_NAME);
   const mentee = mentees.find(m => m.id === parseInt(req.params.id));
 
@@ -19,7 +22,6 @@ function getMenteeById(req, res) {
   res.status(200).json(mentee);
 }
 
-// POST create new mentee
 function createMentee(req, res) {
   const { name, email, goals } = req.body;
 
@@ -43,8 +45,11 @@ function createMentee(req, res) {
   res.status(201).json(newMentee);
 }
 
-// PUT update mentee
 function updateMentee(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentee ID' });
+  }
+
   const mentees = readData(FILE_NAME);
   const index = mentees.findIndex(m => m.id === parseInt(req.params.id));
 
@@ -59,8 +64,11 @@ function updateMentee(req, res) {
   res.status(200).json(updatedMentee);
 }
 
-// DELETE mentee
 function deleteMentee(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentee ID' });
+  }
+
   const mentees = readData(FILE_NAME);
   const index = mentees.findIndex(m => m.id === parseInt(req.params.id));
 

@@ -1,38 +1,50 @@
 const { readData, writeData } = require('../utils/fileHelper');
+const { isValidId } = require('../utils/validators');
 
 const FILE_NAME = 'mentors.json';
 
-// GET all mentors
-function getAllMentors(req, res) {
-  const mentors = readData(FILE_NAME);
-  res.status(200).json(mentors);
+function stripPassword(mentor) {
+  const { password, ...safe } = mentor;
+  return safe;
 }
 
-// GET single mentor by ID
+function getAllMentors(req, res) {
+  const mentors = readData(FILE_NAME);
+  res.status(200).json(mentors.map(stripPassword));
+}
+
 function getMentorById(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentor ID' });
+  }
   const mentors = readData(FILE_NAME);
   const mentor = mentors.find(m => m.id === parseInt(req.params.id));
 
   if (!mentor) {
     return res.status(404).json({ error: 'Mentor not found' });
   }
-  res.status(200).json(mentor);
+  res.status(200).json(stripPassword(mentor));
 }
 
-// POST create new mentor
 function createMentor(req, res) {
-  const { name, email, bio, skills } = req.body;
+  const { name, email, password, bio, skills } = req.body;
 
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required' });
   }
 
   const mentors = readData(FILE_NAME);
+
+  const emailTaken = mentors.some(m => m.email === email);
+  if (emailTaken) {
+    return res.status(409).json({ error: 'Email is already registered' });
+  }
 
   const newMentor = {
     id: mentors.length > 0 ? mentors[mentors.length - 1].id + 1 : 1,
     name,
     email,
+    password,
     bio: bio || '',
     skills: skills || [],
     createdAt: new Date().toISOString()
@@ -41,11 +53,13 @@ function createMentor(req, res) {
   mentors.push(newMentor);
   writeData(FILE_NAME, mentors);
 
-  res.status(201).json(newMentor);
+  res.status(201).json(stripPassword(newMentor));
 }
 
-// PUT update mentor
 function updateMentor(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentor ID' });
+  }
   const mentors = readData(FILE_NAME);
   const index = mentors.findIndex(m => m.id === parseInt(req.params.id));
 
@@ -57,11 +71,13 @@ function updateMentor(req, res) {
   mentors[index] = updatedMentor;
   writeData(FILE_NAME, mentors);
 
-  res.status(200).json(updatedMentor);
+  res.status(200).json(stripPassword(updatedMentor));
 }
 
-// DELETE mentor
 function deleteMentor(req, res) {
+  if (!isValidId(req.params.id)) {
+    return res.status(400).json({ error: 'Invalid mentor ID' });
+  }
   const mentors = readData(FILE_NAME);
   const index = mentors.findIndex(m => m.id === parseInt(req.params.id));
 
