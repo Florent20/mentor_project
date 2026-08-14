@@ -2796,3 +2796,11 @@ background:
         border-color: #ffffff !important;
     }
 }
+
+/* Mentor registration skills */
+.mentor-skills-group[hidden]{display:none}.field-help{display:block;margin-top:7px;color:#6b7280;font-size:.78rem}.required-star{color:#ef4444}.mentor-skills-group{margin-top:2px}
+
+/* Distinct mentor dashboard design: same brand colors and Inter typography */
+.mentor-dashboard-body .sidebar{background:#16142b}.mentor-dashboard-body .dashboard-header{background:#fffdf8;border-bottom:1px solid #ece8df}.mentor-dashboard-body .dashboard-main{background:#f8f6f1}.mentor-dashboard-body .dashboard-content{max-width:1440px}.mentor-dashboard-body .welcome{background:linear-gradient(135deg,#1d183b 0%,#312b61 65%,#6d5dfc 140%);color:#fff;border-radius:24px;padding:34px 38px;margin-bottom:24px}.mentor-dashboard-body .welcome h1,.mentor-dashboard-body .welcome p{color:#fff}.mentor-dashboard-body .welcome .eyebrow{color:#c7c1ff}.mentor-dashboard-body .stats-grid{grid-template-columns:repeat(4,1fr)}.mentor-dashboard-body .stat-card{border-radius:18px;border:1px solid #e9e3d8;box-shadow:none}.mentor-dashboard-body .panel{border-radius:20px;border:1px solid #e9e3d8;box-shadow:none}.mentor-dashboard-body .dashboard-grid{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr)}.mentor-dashboard-body .upcoming{background:#fffdf8}.mentor-dashboard-body .workflow-panel{border-left:4px solid #6d5dfc}.mentor-dashboard-body .mentor-row{border-radius:14px}.mentor-dashboard-body .side-nav a.active{background:#6d5dfc;color:#fff}.mentor-dashboard-body .btn-primary{box-shadow:0 8px 20px rgba(109,93,252,.18)}
+@media(max-width:900px){.mentor-dashboard-body .stats-grid{grid-template-columns:repeat(2,1fr)}.mentor-dashboard-body .dashboard-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.mentor-dashboard-body .stats-grid{grid-template-columns:1fr}.mentor-dashboard-body .welcome{padding:26px 20px;border-radius:18px}}

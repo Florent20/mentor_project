@@ -28,9 +28,10 @@ function getMentorById(req, res) {
 
 function createMentor(req, res) {
   const { name, email, password, bio, skills } = req.body;
+  const normalizedSkills = Array.isArray(skills) ? skills.map(skill => String(skill).trim()).filter(Boolean) : [];
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required' });
+  if (!name || !email || !password || normalizedSkills.length === 0) {
+    return res.status(400).json({ error: 'Name, email, password, and at least one skill are required' });
   }
 
   const mentors = readData(FILE_NAME);
@@ -46,7 +47,7 @@ function createMentor(req, res) {
     email,
     password,
     bio: bio || '',
-    skills: skills || [],
+    skills: normalizedSkills,
     createdAt: new Date().toISOString()
   };
 

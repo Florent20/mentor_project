@@ -33,6 +33,12 @@
         </div>
         <label>Email address<input type="email" id="email" placeholder="you@example.com" required></label>
         <label>Password<input type="password" id="password" placeholder="Create a password" required></label>
+        <div id="mentorSkillsGroup" class="mentor-skills-group" hidden>
+          <label>Professional skills <span class="required-star">*</span>
+            <input type="text" id="skills" placeholder="e.g. Software Engineering, JavaScript, UI/UX Design">
+          </label>
+          <small class="field-help">Separate multiple skills with commas. At least one skill is required for mentors.</small>
+        </div>
         <label class="check"><input type="checkbox" required> I agree to the terms and privacy policy.</label>
         <button class="btn btn-primary full" type="submit" id="registerBtn">Create account</button>
       </form>
@@ -46,6 +52,17 @@
     const registerError = document.getElementById('registerError');
     const registerBtn = document.getElementById('registerBtn');
 
+    const mentorSkillsGroup = document.getElementById('mentorSkillsGroup');
+    const skillsInput = document.getElementById('skills');
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const isMentor = document.querySelector('input[name="role"]:checked').value === 'mentor';
+        mentorSkillsGroup.hidden = !isMentor;
+        skillsInput.required = isMentor;
+        if (!isMentor) skillsInput.value = '';
+      });
+    });
+
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       registerError.style.display = 'none';
@@ -55,6 +72,7 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const role = document.querySelector('input[name="role"]:checked').value;
+      const skillsInput = document.getElementById('skills');
 
       const name = `${firstName} ${lastName}`.trim();
 
@@ -62,8 +80,15 @@
       if (role === 'mentee') {
         payload.goals = '';
       } else {
+        const skills = skillsInput.value.split(',').map(skill => skill.trim()).filter(Boolean);
+        if (skills.length === 0) {
+          registerError.textContent = 'Please add at least one professional skill to create a mentor account.';
+          registerError.style.display = 'block';
+          skillsInput.focus();
+          return;
+        }
         payload.bio = '';
-        payload.skills = [];
+        payload.skills = skills;
       }
 
       const endpoint = role === 'mentor' ? '/mentors' : '/mentees';

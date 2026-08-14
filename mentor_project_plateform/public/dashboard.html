@@ -25,7 +25,7 @@
   <main class="dashboard-main">
     <header class="dashboard-header">
       <button class="mobile-sidebar" aria-label="Open sidebar">☰</button>
-      <div class="search"><span>⌕</span><input type="search" placeholder="Search mentors, skills..."></div>
+      <div class="search"><span>⌕</span><input type="search" id="mentorSearch" placeholder="Search mentors by name or skills..." aria-label="Search mentors by name or skills"></div>
       <div class="header-actions"><button class="icon-btn">♧</button><div class="avatar" id="avatarInitials">--</div></div>
     </header>
 
@@ -220,6 +220,7 @@
     let mentors = [];
 
     let requests = [];
+    let mentorSearchQuery = '';
 
 
     // ==========================================
@@ -324,17 +325,21 @@
             ).join('');
 
 
-        if (!mentors.length) {
+        const filteredMentors = mentors.filter(mentor => {
+            const haystack = `${mentor.name || ''} ${(mentor.skills || []).join(' ')}`.toLowerCase();
+            return haystack.includes(mentorSearchQuery);
+        });
 
-            mentorList.innerHTML =
-                '<p class="muted-panel">No mentors available yet.</p>';
-
+        if (!filteredMentors.length) {
+            mentorList.innerHTML = '<p class="muted-panel">No mentors match your search.</p>';
             return;
         }
 
-
         mentorList.innerHTML =
-            mentors.slice(0, 5).map(
+            mentors.filter(mentor => {
+                const haystack = `${mentor.name || ''} ${(mentor.skills || []).join(' ')}`.toLowerCase();
+                return haystack.includes(mentorSearchQuery);
+            }).slice(0, 5).map(
                 mentor => {
 
                     const initials =
@@ -794,6 +799,12 @@
         sendRequest
     );
 
+
+    const mentorSearch = document.getElementById('mentorSearch');
+    mentorSearch.addEventListener('input', () => {
+        mentorSearchQuery = mentorSearch.value.trim().toLowerCase();
+        loadMentors().catch(error => console.error('Mentor search error:', error));
+    });
 
     // ==========================================
     // INITIAL LOAD
